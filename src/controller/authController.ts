@@ -33,6 +33,7 @@ export const registerUser = async (req: Request, res: Response) => {
         secure: true, // WAJIB true kalau sameSite 'none'
         sameSite: "none", // Izinkan lintas domain (Netlify <-> Vercel)
         maxAge: 30 * 24 * 60 * 60 * 1000,
+        partitioned: true,
         path: "/", // Pastiin tersedia di semua path api
       });
 
@@ -62,6 +63,7 @@ export const loginUser = async (req: Request, res: Response) => {
         httpOnly: true,
         secure: true,
         sameSite: "none",
+        partitioned: true,
         maxAge: 30 * 24 * 60 * 60 * 1000,
         path: "/",
       });
@@ -89,6 +91,8 @@ export const logoutUser = async (req: Request, res: Response) => {
     httpOnly: true,
     secure: true,
     sameSite: "none",
+    partitioned: true,
+    path: "/",
   });
   logger.info("👋 User logout.");
   res.json({ message: "Logout sukses!" });
