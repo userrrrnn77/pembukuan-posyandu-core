@@ -10,6 +10,7 @@ const allowedOrigins = [
   "http://127.0.0.1:5173",
   "http://192.168.1.3:5173",
   "https://posyandu-kuncup-harapan.netlify.app/",
+  "https://posyandu-kuncup-harapan.netlify.app",
 ];
 
 export default async function handler(req: Request, res: Response) {
