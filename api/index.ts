@@ -5,10 +5,17 @@ import type { Request, Response } from "express";
 
 let isConnected = false;
 
+const allowedOrigins = [
+  "http://localhost:5173",
+  "http://127.0.0.1:5173",
+  "http://192.168.1.3:5173",
+  "https://posyandu-kuncup-harapan.netlify.app/",
+];
+
 export default async function handler(req: Request, res: Response) {
   console.log("RUNNING NEW BUILD 🚀");
   // ✅ HANDLE CORS DI LEVEL PALING ATAS (ANTI ERROR)
-  res.setHeader("Access-Control-Allow-Origin", "*");
+  res.setHeader("Access-Control-Allow-Origin", allowedOrigins);
   res.setHeader(
     "Access-Control-Allow-Methods",
     "GET,POST,PUT,DELETE,OPTIONS,PATCH",
