@@ -2,7 +2,7 @@ import mongoose from "mongoose";
 import User from "./src/models/User.js"; // Sesuaikan path model lu bre
 import "dotenv/config"; // Biar bisa baca DATABASE_URL
 
-const MONGODB_URI = process.env.MONGO_URI || "mongodb+srv://posyandu:Rendyagus2004@posyandu.89je6tz.mongodb.net/Posyandu?appName=Posyandu";
+const MONGODB_URI = process.env.MONGO_URI || "kasih mongodb lu bre";
 
 const seedUser = async () => {
   try {
@@ -19,8 +19,8 @@ const seedUser = async () => {
     // 3. Data Admin buat login pertama kali
     const adminData = {
       fullname: "Admin Arsitek Titanium",
-      phone: "081234567890", // Ini buat login ntar
-      password: "password123", // Tenang bre, bakal otomatis ter-hash oleh schema.pre("save")
+      phone: "", // Ini buat login ntar
+      password: "", // Tenang bre, bakal otomatis ter-hash oleh schema.pre("save")
     };
 
     // 4. Eksekusi save
