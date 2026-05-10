@@ -16,38 +16,40 @@ app.set("trust proxy", 1);
 
 app.use(morgan("dev"));
 
-app.use(cookieParser());
+const allowedOrigins = [
+  "https://posyandu-kuncup-harapan.netlify.app",
+  "http://localhost:5173",
+  "http://127.0.0.1:5173",
+  "http://192.168.1.3:5173",
+];
 
-// const allowedOrigins = [
-//   "http://localhost:5173",
-//   "http://127.0.0.1:5173",
-//   "http://192.168.1.3:5173",
-// ];
+app.use(
+  cors({
+    origin: (origin, callback) => {
+      if (!origin) return callback(null, true);
 
-// app.use(
-//   cors({
-//     origin: (origin, callback) => {
-
-//       if (!origin) return callback(null, true);
-
-//       if (allowedOrigins.includes(origin)) {
-//         callback(null, true);
-//       } else {
-//         callback(new Error("Gak diizinin CORS sama Arsitek, bre!"));
-//       }
-//     },
-//     methods: ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"],
-//     credentials: true, // WAJIB TRUE kalo pake Cookie-Parser / Session
-//     allowedHeaders: ["Content-Type", "Authorization", "X-Requested-With"],
-//   }),
-// );
-
-// app.options("*", (req: Request, res: Response) => {
-//   res.status(204).end();
-// });
+      if (allowedOrigins.includes(origin)) {
+        callback(null, true);
+      } else {
+        callback(new Error("Gak diizinin CORS sama Arsitek, bre!"));
+      }
+    },
+    methods: ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"],
+    credentials: true, // WAJIB TRUE kalo pake Cookie-Parser / Session
+    allowedHeaders: ["Content-Type", "Authorization", "X-Requested-With"],
+  }),
+);
 
 app.use(express.json({ limit: "10mb" }));
 app.use(express.urlencoded({ extended: true }));
+
+app.use(cookieParser());
+
+app.use((req: Request, res: Response, next: NextFunction) => {
+  console.log("ORIGIN:", req.headers.origin);
+  console.log("COOKIE HEADER:", req.headers.cookie);
+  next();
+});
 
 app.use("/api", mainRoutes);
 

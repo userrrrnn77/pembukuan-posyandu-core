@@ -57,16 +57,18 @@ export const loginUser = async (req: Request, res: Response) => {
 
     if (user && (await bcrypt.compare(password, user.password))) {
       const token = generateToken(user._id.toString());
+
       res.cookie("token", token, {
         httpOnly: true,
-        // ⚡ Kunci utamanya di sini bre:
-        secure: true, // WAJIB true kalau sameSite 'none'
-        sameSite: "none", // Izinkan lintas domain (Netlify <-> Vercel)
+        secure: true,
+        sameSite: "none",
         maxAge: 30 * 24 * 60 * 60 * 1000,
-        path: "/", // Pastiin tersedia di semua path api
+        path: "/",
       });
 
-      logger.info(`🔑 Admin Login: ${user.fullname}`);
+      console.log("SET COOKIE:");
+      console.log(res.getHeader("set-cookie"));
+
       res.json({
         id: user._id,
         fullname: user.fullname,

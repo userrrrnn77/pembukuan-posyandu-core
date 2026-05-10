@@ -9,6 +9,13 @@ export const protect = async (
   next: NextFunction,
 ) => {
   // Ambil token dari cookie, bukan dari Headers lagi!
+
+  console.log("COOKIES MASUK:");
+  console.log(req.cookies);
+
+  console.log("TOKEN:");
+  console.log(req.cookies.token);
+
   const token = req.cookies.token;
 
   if (!token) {
