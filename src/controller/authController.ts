@@ -29,20 +29,20 @@ export const registerUser = async (req: Request, res: Response) => {
       const token = generateToken(user._id.toString());
       res.cookie("token", token, {
         httpOnly: true,
-        secure: process.env.NODE_ENV === "production",
-        sameSite: "strict",
+        // ⚡ Kunci utamanya di sini bre:
+        secure: true, // WAJIB true kalau sameSite 'none'
+        sameSite: "none", // Izinkan lintas domain (Netlify <-> Vercel)
         maxAge: 30 * 24 * 60 * 60 * 1000,
+        path: "/", // Pastiin tersedia di semua path api
       });
 
       logger.info(`✅ Admin Baru: ${fullname} terdaftar.`);
-      res
-        .status(201)
-        .json({
-          id: user._id,
-          fullname,
-          phone,
-          message: "Gas, akun admin jadi!",
-        });
+      res.status(201).json({
+        id: user._id,
+        fullname,
+        phone,
+        message: "Gas, akun admin jadi!",
+      });
     }
   } catch (error: any) {
     logger.error(`❌ Register Error: ${error.message}`);
@@ -59,9 +59,11 @@ export const loginUser = async (req: Request, res: Response) => {
       const token = generateToken(user._id.toString());
       res.cookie("token", token, {
         httpOnly: true,
-        secure: process.env.NODE_ENV === "production",
-        sameSite: "strict",
+        // ⚡ Kunci utamanya di sini bre:
+        secure: true, // WAJIB true kalau sameSite 'none'
+        sameSite: "none", // Izinkan lintas domain (Netlify <-> Vercel)
         maxAge: 30 * 24 * 60 * 60 * 1000,
+        path: "/", // Pastiin tersedia di semua path api
       });
 
       logger.info(`🔑 Admin Login: ${user.fullname}`);
@@ -83,8 +85,8 @@ export const loginUser = async (req: Request, res: Response) => {
 export const logoutUser = async (req: Request, res: Response) => {
   res.clearCookie("token", {
     httpOnly: true,
-    secure: process.env.NODE_ENV === "production",
-    sameSite: "strict",
+    secure: true,
+    sameSite: "none",
   });
   logger.info("👋 User logout.");
   res.json({ message: "Logout sukses!" });
@@ -136,11 +138,9 @@ export const updateUser = async (req: Request, res: Response) => {
     });
   } catch (error: any) {
     logger.error(`❌ Update User Error: ${error.message}`);
-    res
-      .status(400)
-      .json({
-        message: "Gagal update user, mungkin nomor HP udah dipake orang lain!",
-      });
+    res.status(400).json({
+      message: "Gagal update user, mungkin nomor HP udah dipake orang lain!",
+    });
   }
 };
 
