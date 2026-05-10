@@ -5,7 +5,11 @@ import type { Request, Response } from "express";
 
 let isConnected = false;
 
-const allowedOrigins = ["https://posyandu-kuncup-harapan.netlify.app"];
+const allowedOrigins = [
+  "https://posyandu-kuncup-harapan.netlify.app",
+  "http://localhost:5173",
+  "http://127.0.0.1:5173",
+];
 
 export default async function handler(req: Request, res: Response) {
   console.log("RUNNING NEW BUILD 🚀");
